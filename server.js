@@ -1,10 +1,14 @@
-
+const db = require('./db');
+const cors = require('cors');
 const express = require('express');
 const app = express();
- const users =[];
 const port = 3000;
+const authRouter = require('./auth/auth');
+const expenseRouter = require('./auth/expense');
+app.use(cors());
 app.use(express.json());
-
+app.use('/auth',authRouter);
+app.use('/auth',expenseRouter);
 app.get('/',(req,res)=>{
     res.send('my first');
 });
@@ -18,24 +22,6 @@ app.get('/experience',(req,res)=>{
         "year":"2018"
     });
 });
-
-app.post('/register',(req, res)=>{
-       const {name , email} = req.body;
-   
-    if (!name || !email){
- return res.status(400).json({error:'username and emaile are required'});
-    }
-   
-      const user = {name, email}; 
-        users.push(user);
-    res.status(201).json({
-        message:'sucessfully account created'
-        
-    });
-    res.json({user:user});
-     
-});
-
 app.get('/users',(req,res)=>{
 
     res.json(users);
